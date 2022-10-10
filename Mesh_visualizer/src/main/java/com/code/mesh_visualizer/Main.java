@@ -46,7 +46,7 @@ public class Main extends Application {
         mash = new Mash();
 
         // load color palette
-        File css_file = new File("style/main_style.css");
+        File css_file = new File("src/main/resources/style/main_style.css");
         css_style_file = "file:///" + css_file.getAbsolutePath().replace("\\", "/");
 
         // set up border pane layout
@@ -87,8 +87,6 @@ public class Main extends Application {
 
             main_scene.getChildren().addAll(AB, BC, CA);
         }
-
-        System.out.println("painting");
     }
 
 
