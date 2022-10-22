@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Face {
-    private List<Point> points;
+    private List<Vec4> points;
 
-    public Face(Point p1, Point p2, Point p3) {
-        points = new ArrayList<>();
-        points = List.of(p1, p2, p3);
+    public Face(Vec4 p1, Vec4 p2, Vec4 p3) {
+        points = new ArrayList<>(List.of(p1, p2, p3));
     }
 
-    public List<Point> getPoints() {
+    public List<Vec4> getPoints() {
         return points;
     }
 }

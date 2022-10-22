@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Mash {
-    private List<Point> points;
+    private List<Vec4> points;
     private List<Face> faces;
 
     public Mash() {
@@ -32,7 +32,7 @@ public class Mash {
                 //System.out.println(line);
                 String[] line_split = line.split(" ");
                 if (line_split[0].equals("v")) {
-                    Point point = new Point(Double.valueOf(line_split[1]), Double.valueOf(line_split[2]), Double.valueOf(line_split[3]), 1);
+                    Vec4 point = new Vec4(Double.valueOf(line_split[1]), Double.valueOf(line_split[2]), Double.valueOf(line_split[3]), 1d);
                     points.add(point);
                 } else if (line_split[0].equals("f")) {
                     int v1 = Integer.valueOf(line_split[1]) - 1;
@@ -49,7 +49,7 @@ public class Mash {
 
     }
 
-    public List<Point> getPoints() {
+    public List<Vec4> getPoints() {
         return points;
     }
 
