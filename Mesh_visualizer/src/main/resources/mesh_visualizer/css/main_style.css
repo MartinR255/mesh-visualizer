@@ -25,6 +25,7 @@
     -fx-font-family: "Century Gothic";
     -fx-border-width: 0px 0px 0px 2px;
     -fx-border-color: #383838;
+    -fx-padding: 0px 0px 13px 0px;
 }
 
 .anchorPane .button {
@@ -47,6 +48,7 @@
     -fx-text-fill: #383838;
     -fx-font-weight: bold;
 }
+
 
 
 

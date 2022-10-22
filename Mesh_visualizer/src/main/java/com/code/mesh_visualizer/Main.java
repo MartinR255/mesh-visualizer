@@ -1,6 +1,7 @@
 package com.code.mesh_visualizer;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.*;
@@ -22,19 +23,19 @@ import java.util.List;
 
 public class Main extends Application {
     private Group group;
-    private Scene layout_scene;
-    private Pane main_scene;
+    private Scene layoutScene;
+    private Pane mainScene;
+    private ScrollPane scrollingAnchorPane;
     private Stage stage;
 
     private BorderPane layout;
-    private String css_style_file;
+
+    private ScrollBar sc = new ScrollBar();
 
     private double width, height;
     private final double WIDTH_SCREEN_ADJUST_CONSTANT = 0.75, HEIGHT_SCREEN_ADJUST_CONSTANT = 0.7;
     private  Mash mash;
     double initialScaling;
-
-    //*************************
     Mat4 objectTransformationMatrix;
 
     @Override
@@ -45,19 +46,34 @@ public class Main extends Application {
 
         this.stage = stage;
         group = new Group();
-        main_scene = new Pane();
+        mainScene = new Pane();
         mash = new Mash();
 
         // set up border pane layout
         layout = new BorderPane();
-        layout.setCenter(main_scene);
+        layout.setCenter(mainScene);
         createTopActionPanel();
         createRightActionPanel();
 
+        objectTransformationMatrix = new Mat4();
 
-        layout_scene = new Scene(layout, width, height);
+        stage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            width = (double) newValue;
+            createTopActionPanel();
+            paintScene();
+        });
+
+        stage.heightProperty().addListener((observable, oldValue, newValue) -> {
+            height = (double) newValue;
+            createRightActionPanel();
+            paintScene();
+        });
+
+        layoutScene = new Scene(layout, width, height);
+        stage.setMinWidth(525);
+        stage.setMinHeight(285);
         stage.setTitle("Mash Visualizer");
-        stage.setScene(layout_scene);
+        stage.setScene(layoutScene);
         stage.show();
     }
 
@@ -67,7 +83,7 @@ public class Main extends Application {
     }
 
     public void paintScene() {
-        main_scene.getChildren().clear();
+        mainScene.getChildren().clear();
         Mat4 transformationMatrix = createProjectionMatrix();
 
         for (Face face : mash.getFaces()) {
@@ -85,12 +101,12 @@ public class Main extends Application {
             Line BC = new Line(pointB[0], pointB[1], pointC[0], pointC[1]);
             Line CA = new Line(pointC[0], pointC[1], pointA[0], pointA[1]);
 
-            main_scene.getChildren().addAll(AB, BC, CA);
+            mainScene.getChildren().addAll(AB, BC, CA);
         }
     }
 
     public void clearScreen() {
-        main_scene.getChildren().clear();
+        mainScene.getChildren().clear();
         mash.clearMash();
         objectTransformationMatrix = new Mat4();
         resetSlicerValuesToDefault();
@@ -151,12 +167,9 @@ public class Main extends Application {
                 this.getClass().getResource("/mesh_visualizer/css/main_style.css").toExternalForm());
         rightActionPanel.getStyleClass().add("anchorPane");
         rightActionPanel.setMinWidth(270);
-
-        double w = rightActionPanel.getWidth();
-        double h = rightActionPanel.getHeight();
+        rightActionPanel.setMinHeight(mainScene.getHeight());
 
         List<Object> sliderElement;
-
         // TRANSLATE CONTROLS
         Label translateLabel = createLabel("Translate", 5d);
         double[] sliderValues = new double[]{-2, 2, defaultValueTranslationSlider};
@@ -215,7 +228,7 @@ public class Main extends Application {
         lightDirectionZText = (TextField) sliderElement.get(0);
         lightDirectionSliderZ = (Slider) sliderElement.get(1);
 
-        computeButton = createButton("Compute", 610d);
+        computeButton = createButton("Compute", 620d);
         // ----------------------------------------------------
         resetButton = createButton("Reset", 670);
 
@@ -228,7 +241,11 @@ public class Main extends Application {
                 lightDirectionSliderX, lightDirectionXText, lightDirectionSliderY, lightDirectionYText, scaleLabel,
                 lightDirectionSliderZ, lightDirectionZText, computeButton, resetButton, lightLabel);
 
-        layout.setRight(rightActionPanel);
+        scrollingAnchorPane = new ScrollPane();
+        scrollingAnchorPane.setMinViewportWidth(270d);
+        scrollingAnchorPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollingAnchorPane.setContent(rightActionPanel);
+        layout.setRight(scrollingAnchorPane);
     }
 
     private <T> List<T> setupSlider(double yPositionText, double[] sliderValues) {
@@ -249,9 +266,7 @@ public class Main extends Application {
         });
 
         sliderText.textProperty().addListener((observable, oldText, newText) -> {
-            Pattern pattern = Pattern.compile("[0-9]+(.[0-9]+|)");
-            Matcher matcher = pattern.matcher(newText);
-            if (matcher.find()) {
+            if (Validators.isDouble(newText)) {
                 Double rounded = Double.valueOf(Math.round(Double.valueOf(newText) * 100.0) / 100.0);
                 slider.setValue(rounded);
             }
@@ -308,8 +323,8 @@ public class Main extends Application {
     }
 
     private Mat4 createProjectionMatrix() {
-        double w_center = main_scene.getWidth() / 2;
-        double h_center = main_scene.getHeight() / 2;
+        double w_center = mainScene.getWidth() / 2;
+        double h_center = mainScene.getHeight() / 2;
         initialScaling = width / 10;
 
         Mat4 translationMatrix = new Mat4();
@@ -385,7 +400,7 @@ public class Main extends Application {
     }
 
     private void resetObject() {
-        main_scene.getChildren().clear();
+        mainScene.getChildren().clear();
         objectTransformationMatrix = new Mat4();
         resetSlicerValuesToDefault();
     }
