@@ -10,7 +10,7 @@ public class Mat4 {
     private List<List<Double>> matrix;
 
     public Mat4() {
-        matrix = Stream.generate(() -> new ArrayList<Double>(Collections.nCopies(4, 0.0)))
+        matrix = Stream.generate(() -> new ArrayList<>(Collections.nCopies(4, 0.0)))
                 .limit(4)
                 .collect(Collectors.toList());
         setValue(0, 0, 1d);
@@ -29,10 +29,10 @@ public class Mat4 {
 
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (List<Double> l : matrix) {
-            result += l + "\n";
+            result.append(l).append("\n");
         }
-        return result;
+        return result.toString();
     }
 }

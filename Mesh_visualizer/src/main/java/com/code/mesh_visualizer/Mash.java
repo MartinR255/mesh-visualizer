@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Mash {
@@ -32,12 +31,12 @@ public class Mash {
                 //System.out.println(line);
                 String[] line_split = line.split(" ");
                 if (line_split[0].equals("v")) {
-                    Vec4 point = new Vec4(Double.valueOf(line_split[1]), Double.valueOf(line_split[2]), Double.valueOf(line_split[3]), 1d);
+                    Vec4 point = new Vec4(Double.parseDouble(line_split[1]), Double.parseDouble(line_split[2]), Double.parseDouble(line_split[3]), 1d);
                     points.add(point);
                 } else if (line_split[0].equals("f")) {
-                    int v1 = Integer.valueOf(line_split[1]) - 1;
-                    int v2 = Integer.valueOf(line_split[2]) - 1;
-                    int v3 = Integer.valueOf(line_split[3]) - 1;
+                    int v1 = Integer.parseInt(line_split[1]) - 1;
+                    int v2 = Integer.parseInt(line_split[2]) - 1;
+                    int v3 = Integer.parseInt(line_split[3]) - 1;
 
                     Face face = new Face(points.get(v1), points.get(v2), points.get(v3));
                     faces.add(face);
@@ -47,10 +46,6 @@ public class Mash {
             System.out.println(e.getMessage());
         }
 
-    }
-
-    public List<Vec4> getPoints() {
-        return points;
     }
 
     public List<Face> getFaces() {

@@ -1,7 +1,6 @@
 package com.code.mesh_visualizer;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.*;
@@ -14,15 +13,12 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Main extends Application {
-    private Group group;
     private Scene layoutScene;
     private Pane mainScene;
     private ScrollPane scrollingAnchorPane;
@@ -30,7 +26,6 @@ public class Main extends Application {
 
     private BorderPane layout;
 
-    private ScrollBar sc = new ScrollBar();
 
     private double width, height;
     private final double WIDTH_SCREEN_ADJUST_CONSTANT = 0.75, HEIGHT_SCREEN_ADJUST_CONSTANT = 0.7;
@@ -39,13 +34,12 @@ public class Main extends Application {
     Mat4 objectTransformationMatrix;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         width = screenBounds.getWidth() * WIDTH_SCREEN_ADJUST_CONSTANT;
         height = screenBounds.getHeight() * HEIGHT_SCREEN_ADJUST_CONSTANT;
 
         this.stage = stage;
-        group = new Group();
         mainScene = new Pane();
         mash = new Mash();
 
@@ -56,23 +50,11 @@ public class Main extends Application {
         createRightActionPanel();
 
         objectTransformationMatrix = new Mat4();
-
-        stage.widthProperty().addListener((observable, oldValue, newValue) -> {
-            width = (double) newValue;
-            createTopActionPanel();
-            paintScene();
-        });
-
-        stage.heightProperty().addListener((observable, oldValue, newValue) -> {
-            height = (double) newValue;
-            createRightActionPanel();
-            paintScene();
-        });
-
+        setWindowEventListeners();
         layoutScene = new Scene(layout, width, height);
         stage.setMinWidth(525);
         stage.setMinHeight(285);
-        stage.setTitle("Mash Visualizer");
+        stage.setTitle("Mesh Visualizer");
         stage.setScene(layoutScene);
         stage.show();
     }
@@ -82,7 +64,7 @@ public class Main extends Application {
         launch();
     }
 
-    public void paintScene() {
+    private void paintScene() {
         mainScene.getChildren().clear();
         Mat4 transformationMatrix = createProjectionMatrix();
 
@@ -105,32 +87,45 @@ public class Main extends Application {
         }
     }
 
-    public void clearScreen() {
+    private void setWindowEventListeners() {
+        stage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            width = (double) newValue;
+            createTopActionPanel();
+            paintScene();
+        });
+
+        stage.heightProperty().addListener((observable, oldValue, newValue) -> {
+            height = (double) newValue;
+            createRightActionPanel();
+            paintScene();
+        });
+    }
+
+    private void clearScreen() {
         mainScene.getChildren().clear();
         mash.clearMash();
         objectTransformationMatrix = new Mat4();
         resetSlicerValuesToDefault();
     }
 
-    private HBox topActionPanel;
-    private Button fileExplorerButton, clearScreenButton;
     private FileChooser fileExplorer;
     private void createTopActionPanel() {
-        topActionPanel = new HBox();
+        HBox topActionPanel = new HBox();
         topActionPanel.getStylesheets().add(
-                this.getClass().getResource("/mesh_visualizer/css/main_style.css").toExternalForm());
+                Objects.requireNonNull(this.getClass().getResource("/mesh_visualizer/css/main_style.css")).toExternalForm());
         topActionPanel.getStyleClass().add("hbox");
         topActionPanel.setAlignment(Pos.CENTER_LEFT);
         topActionPanel.setSpacing(45);
 
         // setup buttons
-        fileExplorerButton = new Button("Choose File");
-        clearScreenButton = new Button("Clear");
+        Button fileExplorerButton = new Button("Choose File");
+        Button clearScreenButton = new Button("Clear");
 
         topActionPanel.getChildren().addAll(fileExplorerButton, clearScreenButton);
 
         fileExplorer = new FileChooser();
         fileExplorerButton.setOnAction(event -> {
+            fileExplorer.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".obj", "*.obj"));
             File file = fileExplorer.showOpenDialog(stage);
             if (file != null) {
                 clearScreen();
@@ -147,22 +142,17 @@ public class Main extends Application {
         layout.setTop(topActionPanel);
     }
 
-    private AnchorPane rightActionPanel;
     private Slider translateSliderX, translateSliderY, translateSliderZ;
     private Slider rotateSliderX, rotateSliderY, rotateSliderZ;
     private Slider scaleSlider;
     private Slider lightDirectionSliderX, lightDirectionSliderY, lightDirectionSliderZ;
-    private TextField translateSliderXText, translateSliderYText, translateSliderZText;
-    private TextField rotateSliderXText, rotateSliderYText, rotateSliderZText;
-    private TextField scaleSliderText;
-    private TextField lightDirectionXText, lightDirectionYText, lightDirectionZText;
-    private Button computeButton, resetButton;
+    private Button resetButton;
     private double defaultValueTranslationSlider = 0, defaultValueRotationSlider = 0, defaultValueScaleSlider = 1,
                     defaultValueLightSlider = 0;
 
 
     private void createRightActionPanel() {
-        rightActionPanel = new AnchorPane();
+        AnchorPane rightActionPanel = new AnchorPane();
         rightActionPanel.getStylesheets().add(
                 this.getClass().getResource("/mesh_visualizer/css/main_style.css").toExternalForm());
         rightActionPanel.getStyleClass().add("anchorPane");
@@ -174,15 +164,15 @@ public class Main extends Application {
         Label translateLabel = createLabel("Translate", 5d);
         double[] sliderValues = new double[]{-2, 2, defaultValueTranslationSlider};
         sliderElement = setupSlider(30d, sliderValues);
-        translateSliderXText = (TextField) sliderElement.get(0);
+        TextField translateSliderXText = (TextField) sliderElement.get(0);
         translateSliderX = (Slider) sliderElement.get(1);
 
         sliderElement = setupSlider(70d, sliderValues);
-        translateSliderYText = (TextField) sliderElement.get(0);
+        TextField translateSliderYText = (TextField) sliderElement.get(0);
         translateSliderY = (Slider) sliderElement.get(1);
 
         sliderElement = setupSlider(110d, sliderValues);
-        translateSliderZText = (TextField) sliderElement.get(0);
+        TextField translateSliderZText = (TextField) sliderElement.get(0);
         translateSliderZ = (Slider) sliderElement.get(1);
 
         // ----------------------------------------------------
@@ -191,15 +181,15 @@ public class Main extends Application {
         Label rotateLabel = createLabel("Rotate", 160d);
         sliderValues = new double[]{-Math.PI, Math.PI, defaultValueRotationSlider};
         sliderElement = setupSlider(185d, sliderValues);
-        rotateSliderXText = (TextField) sliderElement.get(0);
+        TextField rotateSliderXText = (TextField) sliderElement.get(0);
         rotateSliderX = (Slider) sliderElement.get(1);
 
         sliderElement = setupSlider(225d, sliderValues);
-        rotateSliderYText = (TextField) sliderElement.get(0);
+        TextField rotateSliderYText = (TextField) sliderElement.get(0);
         rotateSliderY = (Slider) sliderElement.get(1);
 
         sliderElement = setupSlider(265d, sliderValues);
-        rotateSliderZText = (TextField) sliderElement.get(0);
+        TextField rotateSliderZText = (TextField) sliderElement.get(0);
         rotateSliderZ = (Slider) sliderElement.get(1);
 
         // ----------------------------------------------------
@@ -208,7 +198,7 @@ public class Main extends Application {
         Label scaleLabel = createLabel("Scale", 305d);
         sliderValues = new double[]{0, 2, defaultValueScaleSlider};
         sliderElement = setupSlider(330d, sliderValues);
-        scaleSliderText = (TextField) sliderElement.get(0);
+        TextField scaleSliderText = (TextField) sliderElement.get(0);
         scaleSlider = (Slider) sliderElement.get(1);
 
         // ----------------------------------------------------
@@ -217,29 +207,28 @@ public class Main extends Application {
         Label lightLabel = createLabel("Light Settings", 370d);
         sliderValues = new double[]{-2, 2, defaultValueLightSlider};
         sliderElement = setupSlider(395d, sliderValues);
-        lightDirectionXText = (TextField) sliderElement.get(0);
+        TextField lightDirectionXText = (TextField) sliderElement.get(0);
         lightDirectionSliderX = (Slider) sliderElement.get(1);
 
         sliderElement = setupSlider(435d, sliderValues);
-        lightDirectionYText = (TextField) sliderElement.get(0);
+        TextField lightDirectionYText = (TextField) sliderElement.get(0);
         lightDirectionSliderY = (Slider) sliderElement.get(1);
 
         sliderElement = setupSlider(475d, sliderValues);
-        lightDirectionZText = (TextField) sliderElement.get(0);
+        TextField lightDirectionZText = (TextField) sliderElement.get(0);
         lightDirectionSliderZ = (Slider) sliderElement.get(1);
 
-        computeButton = createButton("Compute", 620d);
         // ----------------------------------------------------
-        resetButton = createButton("Reset", 670);
+        resetButton = createButton("Reset", 515);
 
-        addEventListeners();
+        addRightPanelEventListeners();
 
         rightActionPanel.getChildren().addAll(
                 translateSliderX, translateSliderXText, translateSliderY, translateSliderYText, translateSliderZ,
                 translateSliderZText, rotateSliderX, rotateSliderXText, rotateSliderY, translateLabel,
                 rotateSliderYText, rotateSliderZ, rotateSliderZText, scaleSliderText, scaleSlider, rotateLabel,
                 lightDirectionSliderX, lightDirectionXText, lightDirectionSliderY, lightDirectionYText, scaleLabel,
-                lightDirectionSliderZ, lightDirectionZText, computeButton, resetButton, lightLabel);
+                lightDirectionSliderZ, lightDirectionZText, resetButton, lightLabel);
 
         scrollingAnchorPane = new ScrollPane();
         scrollingAnchorPane.setMinViewportWidth(270d);
@@ -259,18 +248,18 @@ public class Main extends Application {
         AnchorPane.setTopAnchor(slider, yPositionText + 5d);
         AnchorPane.setLeftAnchor(slider, 15.0);
 
-        TextField finalSliderText = sliderText;
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             String rounded = Double.toString(Math.round(newValue.doubleValue() * 100.0) / 100.0);
-            finalSliderText.setText(rounded);
+            sliderText.setText(rounded);
+            transformObject();
         });
 
         sliderText.textProperty().addListener((observable, oldText, newText) -> {
             if (Validators.isDouble(newText)) {
                 Double rounded = Double.valueOf(Math.round(Double.valueOf(newText) * 100.0) / 100.0);
                 slider.setValue(rounded);
+                transformObject();
             }
-
         });
 
         return new ArrayList<>(List.of((T) sliderText, (T) slider));
@@ -292,17 +281,20 @@ public class Main extends Application {
         return label;
     }
 
-    private void addEventListeners() {
-        computeButton.setOnAction(event -> {
-//            changeLightSource();
-            objectTransformationMatrix = new Mat4();
-            addRotation(rotateSliderX.getValue(), rotateSliderY.getValue(), rotateSliderZ.getValue());
-            addScaling(scaleSlider.getValue());
-            addTranslation(translateSliderX.getValue(), translateSliderY.getValue(), translateSliderZ.getValue());
-            paintScene();
-        });
+    private void transformObject() {
+        // changeLightSource();
+        objectTransformationMatrix = new Mat4();
+        objectTransformationMatrix = Transformations.addRotation(
+                rotateSliderX.getValue(), rotateSliderY.getValue(), rotateSliderZ.getValue(),
+                objectTransformationMatrix);
+        objectTransformationMatrix = Transformations.addScaling(scaleSlider.getValue(), objectTransformationMatrix);
+        objectTransformationMatrix = Transformations.addTranslation(
+                translateSliderX.getValue(), translateSliderY.getValue(), translateSliderZ.getValue(),
+                objectTransformationMatrix);
+        paintScene();
+    }
 
-
+    private void addRightPanelEventListeners() {
         resetButton.setOnAction(event -> {
             resetObject();
             paintScene();
@@ -335,66 +327,10 @@ public class Main extends Application {
         scaleMatrix.setValue(0, 0, initialScaling);
         scaleMatrix.setValue(1, 1, initialScaling);
 
-        scaleMatrix = Transformations.multiply(scaleMatrix, getMirrorMatrixOverX());
+        scaleMatrix = Transformations.multiply(scaleMatrix, Transformations.getMirrorMatrixOverX());
         return Transformations.multiply(Transformations.multiply(translationMatrix, scaleMatrix), objectTransformationMatrix);
     }
 
-    private Mat4 getMirrorMatrixOverX() {
-        Mat4 mirrorMatrix = new Mat4();
-        mirrorMatrix.setValue(1, 1, -1);
-        mirrorMatrix.setValue(2, 2, -1);
-        return mirrorMatrix;
-    }
-
-    private void addTranslation(double x, double y, double z) {
-        Mat4 translationMatrix = new Mat4();
-        translationMatrix.setValue(0, 3, x);
-        translationMatrix.setValue(1, 3, y);
-        translationMatrix.setValue(2, 3, z);
-
-        objectTransformationMatrix = Transformations.multiply(translationMatrix, objectTransformationMatrix);
-    }
-
-    private void addScaling(double scaleValue) {
-        Mat4 scalingMatrix = new Mat4();
-        scalingMatrix.setValue(0, 0, scaleValue);
-        scalingMatrix.setValue(1, 1, scaleValue);
-        scalingMatrix.setValue(2, 2, scaleValue);
-
-        objectTransformationMatrix = Transformations.multiply(scalingMatrix, objectTransformationMatrix);
-    }
-
-    private void addRotation(double x, double y, double z) {
-        if (x != 0.0) {
-            Mat4 rotationXMatrix = new Mat4();
-            rotationXMatrix.setValue(1, 1, Math.cos(x));
-            rotationXMatrix.setValue(1, 2, -Math.sin(x));
-            rotationXMatrix.setValue(2, 1, Math.sin(x));
-            rotationXMatrix.setValue(2, 2, Math.cos(x));
-
-            objectTransformationMatrix = Transformations.multiply(rotationXMatrix, objectTransformationMatrix);
-        }
-
-        if (y != 0.0) {
-            Mat4 rotationYMatrix = new Mat4();
-            rotationYMatrix.setValue(0, 0, Math.cos(y));
-            rotationYMatrix.setValue(0, 2, Math.sin(y));
-            rotationYMatrix.setValue(2, 0, -Math.sin(y));
-            rotationYMatrix.setValue(2, 2, Math.cos(y));
-
-            objectTransformationMatrix = Transformations.multiply(rotationYMatrix, objectTransformationMatrix);
-        }
-
-        if (z != 0.0) {
-            Mat4 rotationZMatrix = new Mat4();
-            rotationZMatrix.setValue(0, 0, Math.cos(z));
-            rotationZMatrix.setValue(0, 1, -Math.sin(z));
-            rotationZMatrix.setValue(1, 0, Math.sin(z));
-            rotationZMatrix.setValue(1, 1, Math.cos(z));
-
-            objectTransformationMatrix = Transformations.multiply(rotationZMatrix, objectTransformationMatrix);
-        }
-    }
 
     private void changeLightSource() {
     }
