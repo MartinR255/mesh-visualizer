@@ -29,10 +29,6 @@ public class Mat4 {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (List<Double> l : matrix) {
-            result.append(l).append("\n");
-        }
-        return result.toString();
+        return matrix.stream().map(String::valueOf).collect(Collectors.joining("\n"));
     }
 }

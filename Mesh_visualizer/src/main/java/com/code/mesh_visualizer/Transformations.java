@@ -1,6 +1,7 @@
 package com.code.mesh_visualizer;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Transformations {
 
@@ -8,16 +9,17 @@ public class Transformations {
         Mat4 resultMatrix = new Mat4();
         List<List<Double>> leftMatrix = mat1.getMat4();
         List<List<Double>> rightMatrix = mat2.getMat4();
-        for (int index = 0; index < 4; index++) {
+
+        Stream.iterate(0, index -> index + 1).limit(4).forEach(index -> {
             List<Double> currentLine = leftMatrix.get(index);
-            for (int columnIndex = 0; columnIndex < 4; columnIndex++) {
-                double value = 0d;
-                for (int valueIndex = 0; valueIndex < 4; valueIndex++) {
-                    value += currentLine.get(valueIndex) * rightMatrix.get(valueIndex).get(columnIndex);
-                }
+            Stream.iterate(0, columnIndex -> columnIndex + 1).limit(4).forEach(columnIndex -> {
+                double value = Stream.iterate(0, valueIndex -> valueIndex + 1).limit(4)
+                        .mapToDouble(valueIndex -> currentLine.get(valueIndex) * rightMatrix.get(valueIndex).get(columnIndex))
+                        .sum();
                 resultMatrix.setValue(index, columnIndex, value);
-            }
-        }
+            });
+        });
+
         return resultMatrix;
     }
 
@@ -25,14 +27,25 @@ public class Transformations {
         Vec4 resultVector = new Vec4();
         List<List<Double>> matrix = mat.getMat4();
         List<Double> multiplierVec = vec.getVec4();
-        for (int index = 0; index < 4; index++) {
+
+        Stream.iterate(0, index -> index + 1).limit(4).forEach(index -> {
             List<Double> currentLine = matrix.get(index);
-            double value = 0;
-            for (int valueIndex = 0; valueIndex < 4; valueIndex++) {
-                value += currentLine.get(valueIndex) * multiplierVec.get(valueIndex);
-            }
+            double value = Stream.iterate(0, valueIndex -> valueIndex + 1).limit(4)
+                    .mapToDouble(valueIndex -> currentLine.get(valueIndex) * multiplierVec.get(valueIndex))
+                    .sum();
             resultVector.setValue(index, value);
-        }
+        });
+
+        return resultVector;
+    }
+
+    public static Vec4 multiply(Vec4 vec, double scalar) {
+        Vec4 resultVector = new Vec4();
+        List<Double> points = vec.getVec4();
+
+        Stream.iterate(0, i -> i + 1).limit(points.size()-1)
+                .forEach(i -> resultVector.setValue(i, points.get(i) * scalar));
+
         return resultVector;
     }
 
@@ -40,6 +53,7 @@ public class Transformations {
         Mat4 mirrorMatrix = new Mat4();
         mirrorMatrix.setValue(1, 1, -1);
         mirrorMatrix.setValue(2, 2, -1);
+
         return mirrorMatrix;
     }
 
@@ -105,5 +119,59 @@ public class Transformations {
         rotationZMatrix.setValue(1, 1, Math.cos(z));
 
         return rotationZMatrix;
+    }
+
+    public static Vec4 addVec4(Vec4 v1, Vec4 v2, double vec4Type) {
+        List<Double> v1Points = v1.getVec4();
+        List<Double> v2Points = v2.getVec4();
+        double q1 = v1Points.get(0) + v2Points.get(0);
+        double q2 = v1Points.get(1) + v2Points.get(1);
+        double q3 = v1Points.get(2) + v2Points.get(2);
+        return new Vec4(q1, q2, q3, vec4Type);
+    }
+
+    public static Vec4 subtractVec4(Vec4 v1, Vec4 v2, double vec4Type) {
+        List<Double> v1Points = v1.getVec4();
+        List<Double> v2Points = v2.getVec4();
+        double q1 = v1Points.get(0) - v2Points.get(0);
+        double q2 = v1Points.get(1) - v2Points.get(1);
+        double q3 = v1Points.get(2) - v2Points.get(2);
+        return new Vec4(q1, q2, q3, vec4Type);
+    }
+
+    public static Vec4 vectorCrossProduct(Vec4 v1, Vec4 v2) {
+        List<Double> v1Points = v1.getVec4();
+        List<Double> v2Points = v2.getVec4();
+        double ax = v1Points.get(0), ay = v1Points.get(1), az = v1Points.get(2);
+        double bx = v2Points.get(0), by = v2Points.get(1), bz = v2Points.get(2);
+
+        double cx = ay * bz - az * by;
+        double cy = az * bx - ax * bz;
+        double cz = ax * by - ay * bx;
+        return new Vec4(cx, cy, cz, 0d);
+    }
+
+    public static Vec4 normalizeVector(Vec4 vec) {
+        List<Double> points = vec.getVec4();
+        double sumOfSquares = Stream.iterate(0, i -> i + 1).limit(vec.getVec4().size()-1)
+                .mapToDouble(i -> Math.pow(vec.getVec4().get(i), 2)).sum();
+        double len = Math.sqrt(sumOfSquares);
+        return new Vec4(points.get(0) / len, points.get(1) / len, points.get(2) / len, 0d);
+    }
+
+    public static double dotProduct(Vec4 v1, Vec4 v2) {
+        double product;
+        List<Double> v1Points = v1.getVec4();
+        List<Double> v2Points = v2.getVec4();
+
+        product = Stream.iterate(0, i -> i + 1).limit(v1Points.size()-1)
+                .mapToDouble(i -> v1Points.get(i) * v2Points.get(i)).sum();
+        return product;
+    }
+
+    public static Vec4 getTriangleNormal(Vec4 p0, Vec4 p1, Vec4 p2) {
+        Vec4 v0 = Transformations.normalizeVector(Transformations.subtractVec4(p1, p0, 0d));
+        Vec4 v1 = Transformations.normalizeVector(Transformations.subtractVec4(p2, p1, 0d));
+        return Transformations.vectorCrossProduct(v0, v1);
     }
 }

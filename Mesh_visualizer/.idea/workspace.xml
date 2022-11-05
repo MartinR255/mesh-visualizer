@@ -5,20 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e694603-13cd-4746-9758-94bee3a92a63" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Mesh_visualizer_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/ArrayTr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/MainBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/MainBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mash.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mat4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mat4.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Transformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Transformations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Validators.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Validators.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -40,13 +49,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Program Files/Java/javafx-sdk-19/bin/vcruntime140_1.dll",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "inlay.hints"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="MainBuilder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.code.mesh_visualizer.MainBuilder" />
@@ -78,10 +93,33 @@
       <workItem from="1666474991851" duration="1706000" />
       <workItem from="1666613834704" duration="1441000" />
       <workItem from="1666646008353" duration="3152000" />
+      <workItem from="1667211325108" duration="22837000" />
+      <workItem from="1667243909797" duration="341000" />
+      <workItem from="1667253677405" duration="3367000" />
+      <workItem from="1667427779431" duration="3081000" />
+      <workItem from="1667464888341" duration="14094000" />
+      <workItem from="1667495169422" duration="7461000" />
+      <workItem from="1667509041203" duration="2069000" />
+      <workItem from="1667511672771" duration="176000" />
+      <workItem from="1667519538326" duration="2790000" />
+      <workItem from="1667523077358" duration="204000" />
+      <workItem from="1667584106206" duration="68000" />
+      <workItem from="1667604774076" duration="3699000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
