@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e694603-13cd-4746-9758-94bee3a92a63" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/ArrayTr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/MainBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/MainBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mash.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mat4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Mat4.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Transformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/code/mesh_visualizer/Transformations.java" afterDir="false" />
-    </list>
+    <list default="true" id="2e694603-13cd-4746-9758-94bee3a92a63" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,19 +40,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Program Files/Java/javafx-sdk-19/bin/vcruntime140_1.dll",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "inlay.hints"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Program Files/Java/javafx-sdk-19/bin/vcruntime140_1.dll&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="MainBuilder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.code.mesh_visualizer.MainBuilder" />
@@ -105,6 +96,7 @@
       <workItem from="1667523077358" duration="204000" />
       <workItem from="1667584106206" duration="68000" />
       <workItem from="1667604774076" duration="3699000" />
+      <workItem from="1678051552828" duration="22000" />
     </task>
     <servers />
   </component>
